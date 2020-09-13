@@ -19,7 +19,7 @@ res.raise_for_status()
 boardSoup = bs4.BeautifulSoup(res.text, 'html.parser')
 futureMeetings = str(boardSoup.select('table#mdtbl')[0])
 if (futureMeetings == old):
-    print("It's all the same")
+    print("It's all the same and there's nothing you can do about it.")
 else:
     print(futureMeetings)
     p = shelve.open(filename)
