@@ -4,11 +4,11 @@ import os
 import shelve
 import ezgmail
 
-ezgmail.init()
 
 #Get the old boardPaq future meetings list
 # os.chdir("c:/users/cmsmc/documents/programming/boardWatcher")
 os.chdir("/home/gandalf/boardWatcher")
+ezgmail.init()
 
 filename = "oldBoardMeetings"
 siteAddress = "https://www.boardpaq.com/cast?c=hG3yQ4gP3kN6yH7uJ5sB&t=N"
