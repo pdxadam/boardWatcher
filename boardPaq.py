@@ -2,13 +2,24 @@ import requests
 import bs4
 import os
 import shelve
-import ezgmail
+import paho.mqtt.client as mqtt
 
+broker = "mchome.local"
+port = 1883
+
+
+def on_publish(client, userdata, result):
+    pass
+
+def mqttPost(postable):
+    client1 = mqtt.Client("piClient")
+    client1.on_publish = on_publish
+    client1.connect(broker, port)
+    ret = client1.publish("rta/board", postable)
 
 #Get the old boardPaq future meetings list
 # os.chdir("c:/users/cmsmc/documents/programming/boardWatcher")
 os.chdir("/home/gandalf/boardWatcher")
-ezgmail.init()
 
 filename = "oldBoardMeetings"
 siteAddress = "https://www.boardpaq.com/cast?c=hG3yQ4gP3kN6yH7uJ5sB&t=N"
@@ -32,9 +43,11 @@ else:
     p['oldBoardMeetings'] = futureMeetings
     p.close()
     #This is where I want to send the email out.
+    mqttPost(futureMeetings)
+    
 
 
 
-    ezgmail.send("pdxadam@gmail.com", "Changes to upcoming board meetings", siteAddress + "\n" + futureMeetings)
+  
 
 
