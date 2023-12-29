@@ -1,21 +1,25 @@
+#notes: 12/29/2023
+# It now works
 import requests
 import bs4
 import os
 import shelve
 import paho.mqtt.client as mqtt
+import paho.mqtt.publish as publish
 
 broker = "mchome.local"
 port = 1883
+topic = "homeassistant/rta/board/"
 
 
-def on_publish(client, userdata, result):
-    print(result)
 
 def mqttPost(postable):
-    client1 = mqtt.Client("piClient")
-    client1.on_publish = on_publish
-    client1.connect(broker, port)
-    ret = client1.publish("homeassistant/rta/board", postable)
+    f = open("mq", "r")
+    l = f.readline()[:-1].split(",")
+    f.close()
+    publish.single(topic, payload=postable, hostname=broker, client_id = "boardPoster", port = port, auth = {'username':l[0], 'password':l[1]} )
+    
+   
 
 #Get the old boardPaq future meetings list
 # os.chdir("c:/users/cmsmc/documents/programming/boardWatcher")
