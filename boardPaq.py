@@ -4,7 +4,6 @@ import requests
 import bs4
 import os
 import shelve
-import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
 
 broker = "mchome.local"
