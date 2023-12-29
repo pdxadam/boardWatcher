@@ -9,13 +9,13 @@ port = 1883
 
 
 def on_publish(client, userdata, result):
-    pass
+    print(result)
 
 def mqttPost(postable):
     client1 = mqtt.Client("piClient")
     client1.on_publish = on_publish
     client1.connect(broker, port)
-    ret = client1.publish("rta/board", postable)
+    ret = client1.publish("homeassistant/rta/board", postable)
 
 #Get the old boardPaq future meetings list
 # os.chdir("c:/users/cmsmc/documents/programming/boardWatcher")
@@ -44,7 +44,7 @@ else:
     p.close()
     #This is where I want to send the email out.
     mqttPost(futureMeetings)
-    
+
 
 
 
