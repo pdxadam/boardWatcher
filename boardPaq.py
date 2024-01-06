@@ -8,7 +8,7 @@ import paho.mqtt.publish as publish
 
 broker = "mchome.local"
 port = 1883
-topic = "homeassistant/rta/board/"
+topic = "homeassistant/boardWatch/"
 
 
 
@@ -37,16 +37,21 @@ except KeyError:
 res = requests.get("https://www.boardpaq.com/cast?c=hG3yQ4gP3kN6yH7uJ5sB&t=N")
 res.raise_for_status()
 boardSoup = bs4.BeautifulSoup(res.text, 'html.parser')
-futureMeetings = str(boardSoup.select('table#mdtbl')[0])
+futureMeetings = boardSoup.select('table#mdtbl td')
+results = ""
+for td in futureMeetings:
+    results = results + " " + td.get_text().strip()
+results = results.strip()
+
 if (futureMeetings == old):
     print("It's all the same and there's nothing you can do about it.")
 else:
-    print(futureMeetings)
+    print(results)
     p = shelve.open(filename)
     p['oldBoardMeetings'] = futureMeetings
     p.close()
     #This is where I want to send the email out.
-    mqttPost(futureMeetings)
+    mqttPost(results)
 
 
 
